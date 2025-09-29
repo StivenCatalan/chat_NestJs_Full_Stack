@@ -1,5 +1,6 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Person } from 'src/person/person.entity';
 
 @Entity()
 export class User {
@@ -23,6 +24,8 @@ export class User {
     @Column()
     password: string;
 
-    @Column()
-    personId: number;
+    @OneToOne(() => Person, person => person.id)
+    @JoinColumn({ name: 'personId' })
+    person: Person;
+
 }
