@@ -1,8 +1,11 @@
+import { File } from 'src/file/file.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -31,6 +34,7 @@ export class Group {
   })
   description: string;
 
-  @Column()
-  fileId: number;
+  @OneToOne(()=>File, file => file.id)
+  @JoinColumn({ name: 'fileId' })
+  file: File;
 }
