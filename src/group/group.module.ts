@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
+import { Group } from "./group.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "./user.entity";
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User])
+        TypeOrmModule.forFeature([Group])
     ]
 })
-export class UserModule {}
+export class GroupModule {}
