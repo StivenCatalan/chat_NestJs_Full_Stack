@@ -1,24 +1,33 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
-import { User } from './user/user.entity';
 import { PersonModule } from './person/person.module';
 import { FileModule } from './file/file.module';
-import { group } from 'console';
 import { GroupModule } from './group/group.module';
 import { MemberModule } from './member/member.module';
-import { Message } from './message/message.entity';
 import { MessageModule } from './message/message.module';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        DB_TYPE: Joi.string().required(),
+        DB_HOST: Joi.string().required(),
+        DB_USER: Joi.string().required(),
+        DB_PASSWORD: Joi.string().required(),
+        DB_NAME: Joi.string().required(),
+        DB_PORT: Joi.number().port().default(3306),
+      }),
+    }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'db_chat',
+      type: process.env.DB_TYPE as any,
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
     }),
