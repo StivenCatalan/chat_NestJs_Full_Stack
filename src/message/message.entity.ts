@@ -1,8 +1,12 @@
+import { Group } from 'src/group/group.entity';
+import { Person } from 'src/person/person.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -24,19 +28,20 @@ export class Message {
   @Column({
     length: 500,
   })
-  message: string;q
+  message: string;
 
-  @Column()
-  personId: number;
+  @ManyToOne(() => Person, (person) => person.sentMessages)
+  @JoinColumn({ name: 'personSendId' })
+  sender: Person;
 
-  @Column()
-  personSendId: number;
+  @ManyToOne(() => Person, (person) => person.receivedMessages)
+  @JoinColumn({ name: 'personId' })
+  receiver: Person;
 
-  @Column()
-  groupId: number;
+  @ManyToOne(() => Group, (group) => group.messages)
+  @JoinColumn({ name: 'groupId' })
+  group: Group;
 
-  @Column({
-    length: 50,
-  })
+  @Column({ length: 50 })
   type: string;
 }

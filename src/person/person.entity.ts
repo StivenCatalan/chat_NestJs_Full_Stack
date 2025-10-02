@@ -1,8 +1,11 @@
+import { Member } from 'src/member/member.entity';
+import { Message } from 'src/message/message.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -37,7 +40,7 @@ export class Person {
   lastName: string;
 
   @Column({
-    length: 50
+    length: 50,
   })
   middleLastName: string;
 
@@ -50,6 +53,15 @@ export class Person {
     length: 50,
   })
   state: string;
+
+  @OneToMany(() => Member, (member) => member.person)
+  members: Member[];
+
+  @OneToMany(() => Message, (message) => message.sender)
+  sentMessages: Message[];
+
+  @OneToMany(() => Message, (message) => message.receiver)
+  receivedMessages: Message[];
 
   @Column()
   fileId: number;
