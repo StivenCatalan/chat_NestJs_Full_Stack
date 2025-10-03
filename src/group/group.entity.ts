@@ -1,10 +1,13 @@
 import { File } from 'src/file/file.entity';
+import { Message } from 'src/message/message.entity';
+import { Member } from 'src/member/member.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -34,7 +37,16 @@ export class Group {
   })
   description: string;
 
-  @OneToOne(()=>File, file => file.id)
+  @OneToMany(() => Message, (message) => message.group)
+  messages: Message[];
+
+  @OneToMany(() => Member, (member) => member.group)
+  members: Member[];
+
+  @OneToOne(() => File)
   @JoinColumn({ name: 'fileId' })
   file: File;
+
+  @Column({ nullable: true })
+  fileId: number;
 }

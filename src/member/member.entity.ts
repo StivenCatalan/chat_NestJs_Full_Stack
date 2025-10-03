@@ -1,8 +1,12 @@
+import { Group } from 'src/group/group.entity';
+import { Person } from 'src/person/person.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -21,9 +25,18 @@ export class Member {
   @DeleteDateColumn()
   deletedAt?: Date;
 
+  @ManyToOne(() => Person, (person) => person.members)
+  @JoinColumn({ name: 'personId' })
+  person: Person;
+
   @Column()
   personId: number;
-  
+
+  @ManyToOne(() => Group, (group) => group.members)
+  @JoinColumn({ name: 'groupId' })
+  group: Group;
+
   @Column()
-  grouId: number;
+  groupId: number;
 }
+ 
