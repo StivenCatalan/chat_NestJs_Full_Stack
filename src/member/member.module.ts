@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { Member } from "./member.entity";
+import { Member } from "./entities/member.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 @Module({
