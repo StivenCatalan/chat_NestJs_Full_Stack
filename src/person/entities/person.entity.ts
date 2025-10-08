@@ -49,6 +49,6 @@ export class Person extends Base {
   @OneToMany(() => Message, (message) => message.receiver)
   receivedMessages: Message[];
 
-  @Column()
+  @Column({ nullable: true})
   fileId: number;
 }

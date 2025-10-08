@@ -5,7 +5,7 @@ import { PersonService } from '../services/person.service';
 export class PersonController {
   constructor(private personService: PersonService) {}
   @Get()
-  async finSllPersons() {
+  async findAllPersons() {
     const persons = await this.personService.findAllPersons();
     return persons;
   }
