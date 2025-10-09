@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber } from "class-validator";
+import {IsNotEmpty, IsNumber } from "class-validator";
 import { CreateUser } from "./create-user.dto";
 import { ApiProperty } from "@nestjs/swagger";
 

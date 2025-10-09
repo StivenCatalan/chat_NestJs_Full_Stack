@@ -1,15 +1,10 @@
 import { Base } from 'src/common/entities/base.entity';
 import { Member } from 'src/member/entities/member.entity';
 import { Message } from 'src/message/entities/message.entity';
-import {
-  Column,
-  Entity,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class Person extends Base {
-
   @Column({
     length: 50,
   })
@@ -49,6 +44,6 @@ export class Person extends Base {
   @OneToMany(() => Message, (message) => message.receiver)
   receivedMessages: Message[];
 
-  @Column({ nullable: true})
+  @Column({ nullable: true })
   fileId: number;
 }
