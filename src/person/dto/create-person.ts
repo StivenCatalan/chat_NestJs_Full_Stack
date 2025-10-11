@@ -1,4 +1,4 @@
-import { StringField } from 'src/common/decoradores-dtos/string-field.decorator';
+import { StringField } from 'src/common/decorators/string-field.decorator';
 
 export class CreatePerson {
   @StringField()

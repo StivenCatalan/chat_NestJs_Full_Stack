@@ -2,6 +2,7 @@ import { Base } from 'src/common/entities/base.entity';
 import { Group } from 'src/group/entities/group.entity';
 import { Person } from 'src/person/entities/person.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { TypeMessage } from '../enums/type.enum';
 
 @Entity()
 export class Message extends Base {
@@ -23,5 +24,5 @@ export class Message extends Base {
   group: Group;
 
   @Column({ length: 50 })
-  type: string;
+  type: TypeMessage;
 }
