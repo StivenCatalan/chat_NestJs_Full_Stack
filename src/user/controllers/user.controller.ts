@@ -15,7 +15,7 @@ export class UserController {
         const users = await this.userService.findAll();
         return users;
     }
-
+    
     @Get('/:id')
     async findOne(
         @Param('id') id: number

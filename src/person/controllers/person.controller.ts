@@ -1,5 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { PersonService } from '../services/person.service';
+import { CreatePerson } from '../dto/create-person';
+import { UpdatePerson } from '../dto/update-person';
 
 @Controller('person')
 export class PersonController {
@@ -15,4 +17,18 @@ export class PersonController {
     const person = await this.personService.findPersonById(id);
     return person;
   }
+
+  @Post()
+  async create(@Body() input: CreatePerson) {
+    return await this.personService.create(input);
+  }
+
+  @Put()
+  async update (
+    @Body() input:UpdatePerson
+  ){
+    return await this.personService.Update(input)
+
+  }
+
 }
