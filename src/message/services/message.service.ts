@@ -6,14 +6,17 @@ import { CreateMessage } from '../dto/create-message';
 import { PersonService } from 'src/person/services/person.service';
 import { TypeMessage } from '../enums/type.enum';
 import { Person } from 'src/person/entities/person.entity';
+import { GroupService } from 'src/group/services/group.service';
+import { Group } from 'src/group/entities/group.entity';
 
 @Injectable()
 export class MessageService {
   constructor(
     @InjectRepository(Message)
     private messageRepository: Repository<Message>,
-    private personService: PersonService
-  ) { }
+    private personService: PersonService,
+    private groupService: GroupService,
+  ) {}
 
   async findAllMessages(): Promise<Message[]> {
     const messages = await this.messageRepository.find();
@@ -29,20 +32,32 @@ export class MessageService {
     return message;
   }
   async create(input: CreateMessage): Promise<Message> {
-    let receiver: Person = new Person();
-    let sender: Person = new Person();
-
     const newMessage = this.messageRepository.create(input);
 
-    sender = await this.personService.findPersonById(input.personSendId) as Person
+    const sender = (await this.personService.findPersonById(
+      input.personSendId,
+    )) as Person;
     if (!sender)
       throw new HttpException('Person Send Not found', HttpStatus.NOT_FOUND);
 
-    if (input.personId && input.type === TypeMessage.PERSON)
-      receiver = await this.personService.findPersonById(input.personId) as Person
+    let receiver: Person | null = null;
+    let group: Group | null = null;
 
-    newMessage.sender = sender
-    newMessage.receiver = receiver
+    if (input.type === TypeMessage.PERSON && input.personId) {
+      receiver = (await this.personService.findPersonById(input.personId,)) as Person;
+      if (!receiver)
+        throw new HttpException('Receiver not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (input.type === TypeMessage.GROUP && input.groupId) {
+      group = (await this.groupService.findGroupById(input.groupId)) as Group;
+      if (!group)
+        throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
+    }
+
+    newMessage.sender = sender;
+    newMessage.receiver = receiver;
+    newMessage.group = group;
 
     return await this.messageRepository.save(newMessage);
   }
