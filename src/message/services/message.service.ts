@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Message } from '../entities/message.entity';
 import { Repository } from 'typeorm';
+import { CreateMessage } from '../dto/create-message';
 
 @Injectable()
 export class MessageService {
@@ -15,7 +16,6 @@ export class MessageService {
     return messages;
   }
 
-  
   async findMessageById(id: number): Promise<Message | null> {
     const message = await this.messageRepository.findOne({
       where: {
@@ -23,5 +23,9 @@ export class MessageService {
       },
     });
     return message;
+  }
+  async create(input: CreateMessage): Promise<Message> {
+    const newMessage = this.messageRepository.create(input);
+    return await this.messageRepository.save(newMessage);
   }
 }

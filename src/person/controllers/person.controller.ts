@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { PersonService } from '../services/person.service';
 import { CreatePerson } from '../dto/create-person';
 import { UpdatePerson } from '../dto/update-person';
@@ -23,7 +23,7 @@ export class PersonController {
     return await this.personService.create(input);
   }
 
-  @Patch()
+  @Put()
   async update (
     @Body() input:UpdatePerson
   ){
