@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { StringField } from 'src/common/decoradores-dtos/string-field.decorator';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { StringField } from 'src/common/decorators/string-field.decorator';
+import { TypeMessage } from '../enums/type.enum';
 
 export class CreateMessage {
   @StringField()
@@ -8,8 +9,12 @@ export class CreateMessage {
   message: string;
 
   @StringField()
-  @ApiProperty()
-  type: string;
+  @ApiProperty({
+    enum: TypeMessage,
+    example: [TypeMessage.GROUP, TypeMessage.PERSON]
+  })
+  @IsEnum(TypeMessage)
+  type: TypeMessage;
 
   @IsNumber()
   @IsNotEmpty()

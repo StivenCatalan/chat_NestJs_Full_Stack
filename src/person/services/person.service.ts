@@ -9,16 +9,16 @@ import { UpdatePerson } from '../dto/update-person';
 export class PersonService {
   constructor(
     @InjectRepository(Person)
-    private personRepsository: Repository<Person>,
+    private personRepository: Repository<Person>,
   ) {}
 
   async findAllPersons(): Promise<Person[]> {
-    const persons = await this.personRepsository.find();
+    const persons = await this.personRepository.find();
     return persons;
   }
 
   async findPersonById(id: number): Promise<Person | null> {
-    const person = await this.personRepsository.findOne({
+    const person = await this.personRepository.findOne({
       where: {
         id: id,
       },
@@ -36,11 +36,11 @@ export class PersonService {
     newPerson.address = input.address;
     newPerson.state = input.state;
 
-    return await this.personRepsository.save(newPerson);
+    return await this.personRepository.save(newPerson);
   }
 
   async Update(input: UpdatePerson): Promise<Person> {
-    let person = await this.personRepsository.findOne({
+    let person = await this.personRepository.findOne({
       where: {
         id: input.id,
       },
@@ -56,7 +56,7 @@ export class PersonService {
     person.address = input.address ?? person.address;
     person.state = input.state ?? person.state;
 
-    person = await this.personRepsository.save(person);
+    person = await this.personRepository.save(person);
 
     return person;
   }
