@@ -15,11 +15,11 @@ export class Message extends Base {
 
   @ManyToOne(() => Person, (person) => person.receivedMessages, { nullable: true })
   @JoinColumn({ name: 'personId' })
-  receiver: Person | null;
+  receiver?: Person;
 
   @ManyToOne(() => Group, (group) => group.messages, { nullable: true })
   @JoinColumn({ name: 'groupId' })
-  group: Group | null;
+  group?: Group;
 
   @Column({ length: 50 })
   type: TypeMessage;
