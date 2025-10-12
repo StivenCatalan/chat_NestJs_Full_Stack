@@ -16,7 +16,7 @@ export class MessageService {
     private messageRepository: Repository<Message>,
     private personService: PersonService,
     private groupService: GroupService,
-  ) {}
+  ) { }
 
   async findAllMessages(): Promise<Message[]> {
     const messages = await this.messageRepository.find();
@@ -34,25 +34,20 @@ export class MessageService {
   async create(input: CreateMessage): Promise<Message> {
     const newMessage = this.messageRepository.create(input);
 
-    const sender = (await this.personService.findPersonById(
-      input.personSendId,
-    )) as Person;
-    if (!sender)
-      throw new HttpException('Person Send Not found', HttpStatus.NOT_FOUND);
+    let receiver: Person = new Person();
+    let group: Group = new Group();
 
-    let receiver: Person | null = null;
-    let group: Group | null = null;
+    const sender = (await this.personService.findPersonById(input.personSendId)) as Person;
+    if (!sender) throw new HttpException('Person Send Not found', HttpStatus.NOT_FOUND);
 
-    if (input.type === TypeMessage.PERSON && input.personId) {
+    if (input.type === TypeMessage.PERSON && input?.personId) {
       receiver = (await this.personService.findPersonById(input.personId,)) as Person;
-      if (!receiver)
-        throw new HttpException('Receiver not found', HttpStatus.NOT_FOUND);
+      if (!receiver) throw new HttpException('Receiver not found', HttpStatus.NOT_FOUND);
     }
 
-    if (input.type === TypeMessage.GROUP && input.groupId) {
-      group = (await this.groupService.findGroupById(input.groupId)) as Group;
-      if (!group)
-        throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
+    if (input.type === TypeMessage.GROUP && input?.groupId) {
+      group = (await this.groupService.findGroupById(input.groupId))  as Group;
+      if (!group) throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
     }
 
     newMessage.sender = sender;
