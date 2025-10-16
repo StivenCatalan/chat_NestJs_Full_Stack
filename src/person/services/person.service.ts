@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Person } from '../entities/person.entity';
 import { Repository } from 'typeorm';
-import { CreatePerson } from '../dto/create-person.dto';
-import { UpdatePerson } from '../dto/update-person.dto';
+import { CreatePersonDto } from '../dto/create-person.dto';
+import { UpdatePersonDto } from '../dto/update-person.dto';
 
 @Injectable()
 export class PersonService {
@@ -26,7 +26,7 @@ export class PersonService {
     return person;
   }
 
-  async create(input: CreatePerson): Promise<Person> {
+  async create(input: CreatePersonDto): Promise<Person> {
     const newPerson = new Person();
 
     newPerson.firstName = input.firstName;
@@ -39,7 +39,7 @@ export class PersonService {
     return await this.personRepository.save(newPerson);
   }
 
-  async Update(input: UpdatePerson): Promise<Person> {
+  async Update(input: UpdatePersonDto): Promise<Person> {
     let person = await this.personRepository.findOne({
       where: {
         id: input.id,
