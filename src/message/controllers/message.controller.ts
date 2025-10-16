@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { MessageService } from '../services/message.service';
-import { CreateMessage } from '../dto/create-message';
+import { CreateMessageDto } from '../dto/create-message.dto';
+import { updateMessageDto } from '../dto/update-message-dto';
 
 @Controller('messages')
 export class MessageController {
@@ -17,7 +18,12 @@ export class MessageController {
     return message;
   }
   @Post()
-  async create(@Body() input: CreateMessage) {
+  async create(@Body() input: CreateMessageDto) {
     return await this.messageService.create(input);
+  }
+
+  @Put()
+  async update(@Body() input:updateMessageDto) {
+    return await this.messageService.update(input)
   }
 }

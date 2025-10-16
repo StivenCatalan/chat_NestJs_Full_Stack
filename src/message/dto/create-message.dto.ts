@@ -3,7 +3,7 @@ import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { StringField } from 'src/common/decorators/string-field.decorator';
 import { TypeMessage } from '../enums/type.enum';
 
-export class CreateMessage {
+export class CreateMessageDto {
   @StringField()
   @ApiProperty()
   message: string;
