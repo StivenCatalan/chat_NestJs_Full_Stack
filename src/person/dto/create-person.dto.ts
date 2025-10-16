@@ -1,6 +1,6 @@
 import { StringField } from 'src/common/decorators/string-field.decorator';
 
-export class CreatePerson {
+export class CreatePersonDto {
   @StringField()
   firstName: string;
 

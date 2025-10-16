@@ -1,8 +1,8 @@
 import {IsNotEmpty, IsNumber } from "class-validator";
-import { CreateUser } from "./create-user.dto";
+import { CreateUserDto } from "./create-user.dto";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class UpdateUserDto extends CreateUser {
+export class UpdateUserDto extends CreateUserDto {
     @ApiProperty()
     @IsNumber()
     @IsNotEmpty()

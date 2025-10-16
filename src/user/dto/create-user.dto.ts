@@ -1,5 +1,5 @@
 import { StringField } from 'src/common/decorators/string-field.decorator';
-export class CreateUser {
+export class CreateUserDto {
 
   @StringField('Example: Kendo@gmail.com')
   email: string;
