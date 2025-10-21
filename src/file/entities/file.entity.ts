@@ -12,6 +12,6 @@ export class File extends Base {
   })
   extension: string;
 
-  @Column()
+  @Column({type:'mediumblob'})
   binary: Buffer;
 }
