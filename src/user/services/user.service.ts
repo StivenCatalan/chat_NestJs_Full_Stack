@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { CreateUser } from '../dto/create-user.dto';
+import { CreateUserDto } from '../dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -26,7 +26,7 @@ export class UserService {
     return user;
   }
 
-  async create(input: CreateUser): Promise<User> {
+  async create(input: CreateUserDto): Promise<User> {
     const newUser = this.userRepository.create(input);
     return await this.userRepository.save(newUser);
   }
