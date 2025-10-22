@@ -1,7 +1,9 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Param, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import type { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from '../services/file.service';
+import { ShowFileDto } from '../dto/show-file-dto';
 
 @ApiTags('file')
 @Controller('file')
@@ -18,6 +20,21 @@ export class FileController {
   async findFileById(@Param('id') id: number) {
     const files = await this.fileService.findFileById(id);
     return files;
+  }
+  
+  @Get('show/:id')
+  async showFile(@Param() params: ShowFileDto, @Res() res: Response) {
+    const file = await this.fileService.getFileById(params.id);
+    if (!file) throw new HttpException('File no found', HttpStatus.NOT_FOUND);
+;;
+    let mimeType = 'application/octet-stream';
+    if (file.extension === 'png') mimeType = 'image/png';
+    if (file.extension === 'jpg' || file.extension === 'jpeg') mimeType = 'image/jpeg';
+    if (file.extension === 'pdf') mimeType = 'application/pdf';
+
+    res.setHeader('Content-Type', mimeType);
+    res.setHeader('Content-Disposition', `inline; filename="${file.name}"`);
+    return res.send(file.binary);
   }
   @Post()
   @UseInterceptors(FileInterceptor('file', {
