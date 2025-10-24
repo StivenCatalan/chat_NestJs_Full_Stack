@@ -13,7 +13,7 @@ export class FileService {
 
   async findAllFiles(): Promise<File[]> {
     const file = await this.fileRepository.find();
-    return file;
+    return file.map((item) => { return { ...item, binary: undefined } as any })
   }
 
   async findFileById(id: number): Promise<File | null> {
@@ -33,7 +33,7 @@ export class FileService {
     return file;
   }
 
-  async saveFile(file: Express.Multer.File): Promise<File> {
+  async saveFile(file): Promise<File> {
     if (!file) throw new HttpException('File no found', HttpStatus.BAD_REQUEST);
     const newFile = this.fileRepository.create({
       name: file.originalname,
