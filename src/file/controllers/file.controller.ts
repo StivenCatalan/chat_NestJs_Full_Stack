@@ -21,12 +21,12 @@ export class FileController {
     const files = await this.fileService.findFileById(id);
     return files;
   }
-  
+
   @Get('show/:id')
   async showFile(@Param() params: ShowFileDto, @Res() res: Response) {
     const file = await this.fileService.getFileById(params.id);
     if (!file) throw new HttpException('File no found', HttpStatus.NOT_FOUND);
-;;
+    
     let mimeType = 'application/octet-stream';
     if (file.extension === 'png') mimeType = 'image/png';
     if (file.extension === 'jpg' || file.extension === 'jpeg') mimeType = 'image/jpeg';
@@ -36,6 +36,7 @@ export class FileController {
     res.setHeader('Content-Disposition', `inline; filename="${file.name}"`);
     return res.send(file.binary);
   }
+
   @Post()
   @UseInterceptors(FileInterceptor('file', {
     limits: { fileSize: 5 * 1024 * 1024 },
@@ -62,7 +63,7 @@ export class FileController {
       },
     },
   })
-  async saveFile(@UploadedFile() file: Express.Multer.File) {
+  async saveFile(@UploadedFile() file) {
     return this.fileService.saveFile(file);
   }
 }
