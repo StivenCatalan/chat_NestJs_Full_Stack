@@ -10,7 +10,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<User[]> {
     const users = await this.userRepository.find();
@@ -22,6 +22,13 @@ export class UserService {
       where: {
         id,
       },
+    });
+    return user;
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({
+      where: { email },
     });
     return user;
   }

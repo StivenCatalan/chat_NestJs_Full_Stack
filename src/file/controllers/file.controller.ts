@@ -5,7 +5,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from '../services/file.service';
 import { ShowFileDto } from '../dto/show-file-dto';
 
-@ApiTags('file')
+@ApiTags('File')
 @Controller('file')
 export class FileController {
   constructor(private fileService: FileService) { }
