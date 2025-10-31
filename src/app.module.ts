@@ -8,6 +8,7 @@ import { MemberModule } from './member/member.module';
 import { MessageModule } from './message/message.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { SecurityModule } from './security/security.module';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import * as Joi from 'joi';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    UserModule, PersonModule, FileModule, GroupModule, MemberModule, MessageModule
+    UserModule, PersonModule, FileModule, GroupModule, MemberModule, MessageModule, SecurityModule
   ],
 })
 export class AppModule { }
