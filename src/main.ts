@@ -12,6 +12,16 @@ async function bootstrap() {
     .setTitle('Chat Service')
     .setDescription('Develop Stiven')
     .setVersion('1.0')
+    .addBearerAuth({
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        description: 'Introducir el token JWT con el formato: Bearer <token>',
+        in: 'header',
+      },
+      'access-token',
+    )
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
