@@ -9,9 +9,9 @@ import { ApiBearerAuth } from "@nestjs/swagger";
 export class UserController {
     constructor(
         private userService: UserService) { }
+
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
-
     @Get()
     async findAll() {
         const users = await this.userService.findAll();
