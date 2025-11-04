@@ -1,12 +1,16 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { GroupService } from '../services/group.service';
 import { CreateGroupDto } from '../dto/create-group-dto';
 import { UpdateGroupDto } from '../dto/update-group-dto';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth('access-token')
 @Controller('group')
 export class GroupController {
   constructor(private groupservice: GroupService) { }
-
+  
   @Get()
   async findAllGroups() {
     const groups = await this.groupservice.findAllGroups();

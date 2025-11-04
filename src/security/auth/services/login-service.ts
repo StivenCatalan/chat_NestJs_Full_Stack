@@ -25,8 +25,7 @@ export class LoginService {
         return {
             message: 'Login successful',
             access_token: token,
-            userId: user.id,
-            email: user.email,
+            user
         }
     };
 }

@@ -1,10 +1,14 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { MemberService } from '../services/member.service';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth('access-token')
 @Controller('member')
 export class MemberController {
   constructor(private memberservice: MemberService) {}
-
+  
   @Get()
   async findAllMembers() {
     const members = await this.memberservice.findAllMembers();

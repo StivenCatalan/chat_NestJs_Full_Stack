@@ -5,12 +5,12 @@ import { CreateUserDto } from "../dto/create-user.dto";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth } from "@nestjs/swagger";
 
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth('access-token')
 @Controller('user')
 export class UserController {
     constructor(
         private userService: UserService) { }
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
 
     @Get()
     async findAll() {
