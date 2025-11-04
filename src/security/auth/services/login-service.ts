@@ -23,7 +23,7 @@ export class LoginService {
 
         return {
             message: 'Login successful',
-            token,
+            token: token,
             user
         }
     };
