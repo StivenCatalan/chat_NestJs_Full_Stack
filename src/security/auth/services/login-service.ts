@@ -1,18 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { LoginDto } from "../dto/login.dto";
 import { UserService } from "src/user/services/user.service";
+import { LoginI } from "../interfaces/auth.interface";
+import { LoginDto } from "../dto/login.dto";
 import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
-
 export class LoginService {
     constructor(
         private userService: UserService,
-        private jwtService: JwtService,
-
+        private jwtService: JwtService
     ) { }
 
-    async loginValidator(input: LoginDto) {
+    async loginValidator(input: LoginDto): Promise<LoginI> {
 
         const user = await this.userService.findByEmail(input.email);
         if (!user) throw new HttpException('User no found', HttpStatus.NOT_FOUND);
@@ -24,7 +23,7 @@ export class LoginService {
 
         return {
             message: 'Login successful',
-            access_token: token,
+            token: token,
             user
         }
     };
