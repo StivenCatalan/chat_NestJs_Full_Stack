@@ -5,11 +5,10 @@ import { LoginController } from "./auth/controllers/login-controller";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { JwtStrategy } from "./auth/strategies/jwt.strategy";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 
 @Module({
     imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
         UserModule,
         PassportModule,
         JwtModule.registerAsync({
