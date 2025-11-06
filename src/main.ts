@@ -1,31 +1,27 @@
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
-import * as path from 'path';
-import 'dotenv/config';
 
 async function bootstrap() {
 
-  const httpsOptions =
-    fs.existsSync(path.join(__dirname, '../ssl/key.pem')) &&
-      fs.existsSync(path.join(__dirname, '../ssl/cert.pem'))
-      ? {
-        key: fs.readFileSync(path.join(__dirname, '../ssl/key.pem')),
-        cert: fs.readFileSync(path.join(__dirname, '../ssl/cert.pem')),
-      }
-      : undefined;
+  let httpsOptions;
 
-  // Si hay certificados usar HTTPS si no HTTP
-  const app = httpsOptions
+  if (process.env.HTTPS == 'true')
+    httpsOptions = {
+      cert: fs.readFileSync(process.env.SSL_CERT as any),
+      key: fs.readFileSync(process.env.SSL_KEY as any)
+    }
+
+  const app = process.env.HTTPS == 'true'
     ? await NestFactory.create(AppModule, { httpsOptions })
     : await NestFactory.create(AppModule);
 
-  // Validaciones globales
+  // validation globals
   app.useGlobalPipes(new ValidationPipe());
 
-  // Configuración Swagger
+  // configuration Swagger
   const config = new DocumentBuilder()
     .setTitle('Chat Service')
     .setDescription('Develop Stiven')

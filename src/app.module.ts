@@ -21,6 +21,10 @@ import { SecurityModule } from './security/security.module';
         DB_PASSWORD: Joi.string().allow('').required(),
         DB_NAME: Joi.string().required(),
         DB_PORT: Joi.number().port().default(3306),
+        SECRET: Joi.string().required(),
+        HTTPS: Joi.boolean().required(),
+        SSL_CERT: Joi.string().optional(),
+        SSL_KEY: Joi.string().optional(),
       }),
     }),
     TypeOrmModule.forRoot({
