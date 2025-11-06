@@ -12,6 +12,7 @@ import { SecurityModule } from './security/security.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         DB_TYPE: Joi.string().required(),
