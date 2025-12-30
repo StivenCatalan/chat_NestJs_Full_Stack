@@ -1,21 +1,20 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { UserService } from "src/user/services/user.service";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { FindUserByEmailEvent } from "src/common/events/events.constants";
 import { LoginI } from "../interfaces/auth.interface";
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { LoginDto } from "../dto/login.dto";
 import { JwtService } from "@nestjs/jwt";
-
 @Injectable()
 export class LoginService {
     constructor(
-        private userService: UserService,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private readonly eventEmitter: EventEmitter2,
     ) { }
 
     async loginValidator(input: LoginDto): Promise<LoginI> {
-
-        const user = await this.userService.findByEmail(input.email);
-        if (!user) throw new HttpException('User no found', HttpStatus.NOT_FOUND);
-        if (input.password !== user.password) throw new HttpException('Incorrect password', HttpStatus.NOT_FOUND);
+        const [user] = await this.eventEmitter.emitAsync(FindUserByEmailEvent, input.email)
+        if (!user) throw new NotFoundException('User Not found');
+        if (input.password !== user.password) throw new UnauthorizedException('Incorrect password');
 
 
         const payload = { sub: user.id, email: user.email };
