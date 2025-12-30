@@ -1,0 +1,19 @@
+
+import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Base } from 'src/common/entities/base.entity';
+import { Person } from 'src/person/entities/person.entity';
+
+@Entity()
+export class User extends Base {
+
+    @Column({ length: 100 })
+    email: string;
+
+    @Column({ length: 50 })
+    password: string;
+
+    @OneToOne(() => Person, person => person.id)
+    @JoinColumn({ name: 'personId' })
+    person: Person;
+
+}
