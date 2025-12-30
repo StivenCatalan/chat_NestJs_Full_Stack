@@ -10,17 +10,15 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @Controller('person')
 export class PersonController {
   constructor(private personService: PersonService) { }
-  
+
   @Get()
   async findAllPersons() {
-    const persons = await this.personService.findAllPersons();
-    return persons;
+    return await this.personService.findAllPersons();
   }
 
   @Get('/:id')
   async findPersonById(@Param('id') id: number) {
-    const person = await this.personService.findPersonById(id);
-    return person;
+    return await this.personService.findPersonById(id);
   }
 
   @Post()
@@ -30,10 +28,7 @@ export class PersonController {
 
   @Put()
   async update(
-    @Body() input: UpdatePersonDto
-  ) {
+    @Body() input: UpdatePersonDto) {
     return await this.personService.Update(input)
-
   }
-
 }

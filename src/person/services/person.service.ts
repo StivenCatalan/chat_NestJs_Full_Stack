@@ -1,28 +1,26 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { CreatePersonDto } from '../dto/create-person.dto';
+import { UpdatePersonDto } from '../dto/update-person.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Person } from '../entities/person.entity';
 import { Repository } from 'typeorm';
-import { CreatePersonDto } from '../dto/create-person.dto';
-import { UpdatePersonDto } from '../dto/update-person.dto';
 
 @Injectable()
 export class PersonService {
   constructor(
     @InjectRepository(Person)
     private personRepository: Repository<Person>,
-  ) {}
+  ) { }
 
   async findAllPersons(): Promise<Person[]> {
-    const persons = await this.personRepository.find();
-    return persons;
+    return await this.personRepository.find();
   }
 
   async findPersonById(id: number): Promise<Person | null> {
     const person = await this.personRepository.findOne({
-      where: {
-        id: id,
-      },
-    });
+      where: { id: id }
+    })
+    if (!person) throw new NotFoundException('Person Not found')
     return person;
   }
 
@@ -41,13 +39,10 @@ export class PersonService {
 
   async Update(input: UpdatePersonDto): Promise<Person> {
     let person = await this.personRepository.findOne({
-      where: {
-        id: input.id,
-      },
-    });
-    if (!person) {
-      throw new HttpException('User Not found', HttpStatus.NOT_FOUND);
-    }
+      where: { id: input.id }
+    })
+
+    if (!person) throw new NotFoundException('Person Not found')
     // Si input es undefined deja el valor anterior
     person.firstName = input.firstName ?? person.firstName;
     person.middleName = input.middleName ?? person.middleName;
@@ -57,7 +52,6 @@ export class PersonService {
     person.state = input.state ?? person.state;
 
     person = await this.personRepository.save(person);
-
     return person;
   }
 }

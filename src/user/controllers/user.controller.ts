@@ -2,8 +2,8 @@ import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/comm
 import { UserService } from "../services/user.service";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { CreateUserDto } from "../dto/create-user.dto";
+import { ApiBearerAuth } from "@nestjs/swagger";  
 import { AuthGuard } from "@nestjs/passport";
-import { ApiBearerAuth } from "@nestjs/swagger";
 
 @UseGuards(AuthGuard('jwt'))
 @ApiBearerAuth('access-token')
@@ -14,15 +14,13 @@ export class UserController {
 
     @Get()
     async findAll() {
-        const users = await this.userService.findAll();
-        return users;
+        return await this.userService.findAll();
     }
 
     @Get('/:id')
     async findOne(
         @Param('id') id: number) {
-        const user = await this.userService.findOne(id);
-        return user;
+        return await this.userService.findOne(id);
     }
 
     @Post()

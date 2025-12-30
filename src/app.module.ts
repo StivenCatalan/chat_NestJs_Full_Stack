@@ -9,6 +9,7 @@ import { MessageModule } from './message/message.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { SecurityModule } from './security/security.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -21,7 +22,18 @@ import { SecurityModule } from './security/security.module';
         DB_PASSWORD: Joi.string().allow('').required(),
         DB_NAME: Joi.string().required(),
         DB_PORT: Joi.number().port().default(3306),
+        SECRET: Joi.string().required(),
+        HTTPS: Joi.boolean().required(),
+        SSL_CERT: Joi.string().optional(),
+        SSL_KEY: Joi.string().optional(),
       }),
+    }),
+    EventEmitterModule.forRoot({
+      wildcard: false,
+      delimiter: '.',
+      maxListeners: 20,
+      // ojo: esto NO hace que sea “async”; sólo gestiona promesas en emitAsync
+      // ignoreErrors: false, // si lo activás, oculta errores (no recomendado al inicio)
     }),
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as any,
